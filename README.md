@@ -11,5 +11,5 @@ Si può usare qualunque IDE in grado di eseguire unit tests con un progetto Mave
 Se non si conoscono Maven o JUnit:
 - Esistono una directory `main` e una directory `test`
 - Il codice va scritto nella directory `main`
-- La struttura della directory `test` è speculare alla directory `main`
+- La struttura delle due directory è identica
 - ***I test non vanno modificati***
