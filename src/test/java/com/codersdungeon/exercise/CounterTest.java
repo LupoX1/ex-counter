@@ -1,4 +1,4 @@
-package com.codersdungeon.ex0;
+package com.codersdungeon.exercise;
 
 import org.junit.Test;
 
@@ -15,6 +15,7 @@ public class CounterTest {
         assertEquals(4, counter.getDigits());
         assertEquals("0000", counter.current());
         assertEquals("9999", counter.maxValue());
+        assertEquals(0, counter.getDecimalValue());
     }
 
     @Test
@@ -26,6 +27,7 @@ public class CounterTest {
         assertEquals(4, counter.getDigits());
         assertEquals("0000", counter.current());
         assertEquals("1111", counter.maxValue());
+        assertEquals(0, counter.getDecimalValue());
     }
 
     @Test
@@ -33,10 +35,11 @@ public class CounterTest {
         Counter counter = Counter.createCounter(8, 3);
 
         assertNotNull(counter);
-        assertEquals(2, counter.getBase());
-        assertEquals(4, counter.getDigits());
+        assertEquals(8, counter.getBase());
+        assertEquals(3, counter.getDigits());
         assertEquals("000", counter.current());
         assertEquals("777", counter.maxValue());
+        assertEquals(0, counter.getDecimalValue());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -77,26 +80,39 @@ public class CounterTest {
         Counter counter = Counter.createCounter(10, 1);
         assertEquals("9", counter.maxValue());
         assertEquals("0", counter.current());
+        assertEquals(0, counter.getDecimalValue());
 
         for (int i = 0; i < maxValues; i++) {
-            actualValues[i] = counter.next();
+            actualValues[i] = counter.current();
             actualDecimalValues[i] = counter.getDecimalValue();
+            counter.next();
         }
 
-        assertEquals("9", counter.current());
         assertArrayEquals(expectedValues, actualValues);
-        assertEquals(9, counter.getDecimalValue());
         assertArrayEquals(expectedDecimalValues, actualDecimalValues);
-
-        assertEquals("0", counter.next());
         assertEquals("0", counter.current());
         assertEquals(0, counter.getDecimalValue());
     }
 
     @Test
+    public void count6DigitsBase10To45() {
+        Counter counter = Counter.createCounter(10, 6);
+        assertEquals("999999", counter.maxValue());
+        assertEquals("000000", counter.current());
+        assertEquals(0, counter.getDecimalValue());
+
+        for (int i = 0; i < 45; i++) {
+            counter.next();
+        }
+
+        assertEquals("000045", counter.current());
+        assertEquals(45, counter.getDecimalValue());
+    }
+
+    @Test
     public void count3DigitsBase2() {
         String[] expectedValues = {"000", "001", "010", "011", "100", "101", "110", "111"};
-        int[] expectedDecimalValues = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+        int[] expectedDecimalValues = {0, 1, 2, 3, 4, 5, 6, 7};
 
         int maxValues = expectedValues.length;
 
@@ -106,19 +122,33 @@ public class CounterTest {
         Counter counter = Counter.createCounter(2, 3);
         assertEquals("111", counter.maxValue());
         assertEquals("000", counter.current());
+        assertEquals(0, counter.getDecimalValue());
 
         for (int i = 0; i < maxValues; i++) {
-            actualValues[i] = counter.next();
+            actualValues[i] = counter.current();
             actualDecimalValues[i] = counter.getDecimalValue();
+            counter.next();
         }
 
-        assertEquals("111", counter.current());
         assertArrayEquals(expectedValues, actualValues);
-        assertEquals(8, counter.getDecimalValue());
         assertArrayEquals(expectedDecimalValues, actualDecimalValues);
 
-        assertEquals("000", counter.next());
         assertEquals("000", counter.current());
         assertEquals(0, counter.getDecimalValue());
+    }
+
+    @Test
+    public void count8DigitsBase2To74() {
+        Counter counter = Counter.createCounter(2, 8);
+        assertEquals("11111111", counter.maxValue());
+        assertEquals("00000000", counter.current());
+        assertEquals(0, counter.getDecimalValue());
+
+        for (int i = 0; i < 74; i++) {
+            counter.next();
+        }
+
+        assertEquals("01001010", counter.current());
+        assertEquals(74, counter.getDecimalValue());
     }
 }
